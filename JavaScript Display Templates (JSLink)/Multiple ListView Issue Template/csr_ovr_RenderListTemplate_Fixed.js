@@ -84,18 +84,13 @@ pfh.RegisterTemplateOverride = function () {
 ExecuteOrDelayUntilScriptLoaded(function(){
 
 	var OldRenderListView = RenderListView;
-	RenderListView = function(ctx,webPartID)
-	{
-		//Check using the F12 developer toolbar, which WPQ number is required for the webpart
-		if (ctx.wpq == 'WPQ3')
-		{
-			ctx.BaseViewID = 99;
-		}
-		
-		OldRenderListView(ctx,webPartID)
-	
-	}
+	var OldRenderListView = RenderListView;
+	RenderListView = function(ctx,webPartID){
+		ctx.BaseViewId = 101 - parseInt(ctx.wpq.substring(3), 10); //WPQ2 produces 99, WPQ3 produced 98, etc
+		OldRenderListView(ctx,webPartID);	
+	};
 
+	
 },'ClientTemplates.js');
 
 
